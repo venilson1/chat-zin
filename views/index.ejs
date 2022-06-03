@@ -16,7 +16,8 @@
     <span class="text-4xl py-4 text-gray-100">Chat - zin </span>
   </div>
 
-  <div class="bg-violet-500 fixed bottom-0 p-2 flex w-full space-x-4">
+  <div class="bg-violet-500 fixed bottom-0 p-2 flex lg:w-full lg:space-x-4 
+  flex-wrap space-y-2">
     <div class=" flex-none flex items-center space-x-2">
       <label for="username">nome</label>
       <input id="username" class="border-2 outline-none" id="usename" type="text" name="username">
@@ -27,7 +28,7 @@
     </div>
     <button onclick="enviar()" class="bg-violet-700 
       hover:bg-violet-900 text-white font-bold py-2 px-4 
-        rounded">Enviar</button>
+        rounded w-full">Enviar</button>
   </div>
 
   <div id="chat" class="overflow-y-scroll bg-violet-300 h-screen"></div>

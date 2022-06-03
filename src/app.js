@@ -4,7 +4,14 @@ const http = require("http");
 const port = process.env.PORT || 8080;
 const app = express();
 const httpServer = http.createServer(app);
-const io = new socketio.Server(httpServer);
+const io = new socketio.Server(httpServer, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
 
 app.set("view engine", "ejs");
 
