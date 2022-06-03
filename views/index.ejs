@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat - zin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+<body>
+
+  <div class="bg-violet-900 p-2 top-0">
+    <span class="text-4xl py-4 text-gray-100">Chat - zin </span>
+  </div>
+
+  <div class="bg-violet-500 fixed bottom-0 p-2 flex w-full space-x-4">
+    <div class=" flex-none flex items-center space-x-2">
+      <label for="username">nome</label>
+      <input id="username" class="border-2 outline-none" id="usename" type="text" name="username">
+    </div>
+    <div class=" grow flex items-center space-x-2">
+      <label for="msg">mensagem</label>
+      <input id="msg" class="border-2 outline-none w-full" id="msg" type="text" name="msg">
+    </div>
+    <button onclick="enviar()" class="bg-violet-700 
+      hover:bg-violet-900 text-white font-bold py-2 px-4 
+        rounded">Enviar</button>
+  </div>
+
+  <div id="chat" class="overflow-y-scroll bg-violet-300 h-screen"></div>
+</body>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+<script>
+
+  const socket = io("http://localhost:8080/");
+  socket.on("disconnect", () => console.log("desconectou"));
+
+
+
+  const enviar = () => {
+    const username = document.getElementById("username").value;
+    const msgField = document.getElementById("msg");
+
+    const msg = msgField.value;
+    socket.emit("message", { username, msg })
+    msgField.value = "";
+  }
+
+  socket.on("responseMessage", (data) => {
+    const chat = document.getElementById("chat");
+    const p = document.createElement("p");
+    p.innerHTML = `${data.username}:  ${data.msg}`;
+    p.setAttribute('class', 'font-bold px-4 text-violet-900 mb-2');
+    chat.append(p);
+  })
+
+</script>
+
+</html>
