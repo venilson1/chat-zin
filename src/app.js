@@ -15,10 +15,15 @@ const io = new socketio.Server(httpServer, {
 
 app.set("view engine", "ejs");
 
+let messages = [];
+
 io.on("connection", (socket) => {
   socket.on("disconnect", () => console.log(`${socket.id} desconectou`));
 
+  io.emit("previousMessages", messages);
+
   socket.on("message", (data) => {
+    messages.push(data);
     io.emit("responseMessage", data);
   });
 });
