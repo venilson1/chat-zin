@@ -16,19 +16,19 @@
     <span class="text-4xl py-4 text-gray-100">Chat - zin </span>
   </div>
 
-  <div class="bg-violet-500 fixed bottom-0 p-2 flex lg:w-full lg:space-x-4 
-  flex-wrap space-y-2">
-    <div class=" flex-none flex items-center space-x-2">
-      <label for="username">nome</label>
-      <input id="username" class="border-2 outline-none" id="usename" type="text" name="username">
+  <div class="bg-violet-400 fixed bottom-0 p-2 w-full space-y-2 py-2 px-4">
+    <div class="">
+      <label class="text-xs font-bold italic" for="username">nome:</label>
+      <input id="username" class="rounded-md font-bold text-violet-800 p-1 
+      w-full border-2 outline-none" id="usename" type="text" name="username">
     </div>
-    <div class=" grow flex items-center space-x-2">
-      <label for="msg">mensagem</label>
-      <input id="msg" class="border-2 outline-none w-full" id="msg" type="text" name="msg">
+    <div class="">
+      <label class="text-xs font-bold italic" for="msg">mensagem:</label>
+      <input id="msg" class="rounded-md font-bold text-violet-800 p-1 w-full 
+      border-2 outline-none" id="msg" type="text" name="msg">
     </div>
-    <button onclick="enviar()" class="bg-violet-700 
-      hover:bg-violet-900 text-white font-bold py-2 px-4 
-        rounded w-full">Enviar</button>
+    <button onclick="enviar()" class=" rounded-md p-2 bg-violet-700 
+      hover:bg-violet-900 text-white font-bold w-full p-2">Enviar</button>
   </div>
 
   <div id="chat" class="overflow-y-scroll bg-violet-300 h-screen"></div>
@@ -39,10 +39,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
 <script>
 
-  const socket = io("http://localhost:8080/");
+  const prod = "https://chatzinn.herokuapp.com/"
+  const local = "http://localhost:8080"
+
+  const socket = io(prod);
   socket.on("disconnect", () => console.log("desconectou"));
-
-
 
   const enviar = () => {
     const username = document.getElementById("username").value;
@@ -53,13 +54,24 @@
     msgField.value = "";
   }
 
+  socket.on("previousMessages", (messages) => {
+    messages.map(msg => {
+      renderMessage(msg)
+    })
+
+  })
+
   socket.on("responseMessage", (data) => {
+    renderMessage(data)
+  })
+
+  const renderMessage = (data) => {
     const chat = document.getElementById("chat");
     const p = document.createElement("p");
     p.innerHTML = `${data.username}:  ${data.msg}`;
     p.setAttribute('class', 'font-bold px-4 text-violet-900 mb-2');
     chat.append(p);
-  })
+  }
 
 </script>
 
