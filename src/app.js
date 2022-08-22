@@ -1,4 +1,7 @@
+require('dotenv').config();
 const express = require("express");
+const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
 const socketio = require("socket.io");
 const http = require("http");
 const port = process.env.PORT || 8080;
@@ -13,7 +16,18 @@ const io = new socketio.Server(httpServer, {
   },
 });
 
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+
+require('./controllers/authController')(app)
+require('./controllers/adminController')(app)
+require('./controllers/publicController')(app)
+require('./controllers/messageController')(app)
+require('./controllers/confirmationController')(app)
+require('./controllers/askHelpController')(app)
+require('./controllers/doPartController')(app)
 
 let messages = [];
 
@@ -29,7 +43,16 @@ io.on("connection", (socket) => {
 });
 
 app.get("/chat", (req, res) => {
-  res.render("chat");
+  res.json({ msg: "test" })
 });
+
+
+require('./controllers/authController')(app)
+require('./controllers/adminController')(app)
+require('./controllers/publicController')(app)
+require('./controllers/messageController')(app)
+require('./controllers/confirmationController')(app)
+require('./controllers/askHelpController')(app)
+require('./controllers/doPartController')(app)
 
 httpServer.listen(port);
