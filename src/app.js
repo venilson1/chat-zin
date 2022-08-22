@@ -28,8 +28,8 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/chat", (req, res) => {
-  res.json({ msg: "test" })
+app.get("/", (req, res) => {
+  res.render("index");
 });
 
 httpServer.listen(port);
